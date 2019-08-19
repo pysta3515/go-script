@@ -23,6 +23,7 @@ type Shop struct {
 func main() {
 	id := 10
 	env := go_script.Env(id, "id")
+	fmt.Println(env)
 	e := "(+  (- id 1) 2 (+ 3 4))"
 	fmt.Println(go_script.Eval(e).ToInt(env))
 	sale := Sale{
@@ -32,6 +33,8 @@ func main() {
 			3,
 		},
 	}
-	e = "(if (>= sale.SaleID 1) 10.1 0)"
-	fmt.Println(go_script.Eval(e).ToFloat(sale.Env()))
+	env = go_script.Env(sale, "sale")
+	fmt.Println(env)
+	e = "(if (! (>= sale.SaleID 1)) 10.1 0)"
+	fmt.Println(go_script.Eval(e).ToFloat(env))
 }

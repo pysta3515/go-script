@@ -33,6 +33,7 @@ var op = map[string]bool{
 	"||":  true,
 	"if":  true,
 	"in":  true,
+	"!":true,
 }
 
 // Binary 抽象一个二元或多远运算
@@ -166,6 +167,8 @@ func (binary *Binary) ToBool(env map[string]interface{}) bool {
 		return binary.Args[0].ToFloat(env) == binary.Args[1].ToFloat(env)
 	case "!=":
 		return binary.Args[0].ToFloat(env) != binary.Args[1].ToFloat(env)
+	case "!":
+		return !binary.Args[0].ToBool(env)
 	case "if":
 		if binary.Args[0].ToBool(env) {
 			return binary.Args[1].ToBool(env)
@@ -365,6 +368,8 @@ func (binary *Binary) Parse(scan *scanner.Scanner) {
 		if next == '=' {
 			scan.Scan()
 			binary.OP = "!="
+		}else {
+			binary.OP = "!"
 		}
 	case "&":
 		if next == '&' {
